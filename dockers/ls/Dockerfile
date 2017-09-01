@@ -1,0 +1,4 @@
+FROM alpine
+
+ENTRYPOINT ["ls"]
+
