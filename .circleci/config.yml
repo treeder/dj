@@ -34,7 +34,7 @@ jobs:
       - run: docker version
       - run: |
           export PATH=$PATH:$HOME/go/bin
-          dep ensure
+          dep ensure --vendor-only
       # - run: ./test.sh
       - deploy:
           command: |
