@@ -18,12 +18,10 @@ import (
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "boom"
-	app.Usage = "make an explosive entrance"
-	app.Action = func(c *cli.Context) error {
-		fmt.Println("boom! I say!")
-		return nil
-	}
+	app.Name = "Docker Jockey"
+	app.Usage = "Spinning sick containers"
+	app.Version = "0.0.1"
+	app.Action = cli.ShowAppHelp
 
 	app.Commands = []cli.Command{
 		{
