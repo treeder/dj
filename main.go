@@ -106,7 +106,9 @@ func main() {
 				}
 				cmd := c.Args().Tail()
 				// fmt.Println("CMD:", cmd, cmd[0])
-				cmd = strings.Fields(cmd[0])
+				if len(cmd) > 0 {
+					cmd = strings.Fields(cmd[0])
+				}
 				// fmt.Println("CMD:", cmd)
 
 				// see if we already have image, if not, pull it
@@ -123,9 +125,8 @@ func main() {
 					panic(err)
 				}
 				mounts := []string{fmt.Sprintf("%s:%s", wd, "/wd")}
-				resp, err := cli.ContainerCreate(ctx, &container.Config{
+				cfg := &container.Config{
 					Image:        image,
-					Cmd:          cmd,
 					AttachStdout: true,
 					AttachStderr: true,
 					OpenStdin:    true,
@@ -133,7 +134,11 @@ func main() {
 					Tty:          true,
 					// Volumes:      mounts, // List of volumes (mounts) used for the container
 					WorkingDir: "/wd", // Current directory (PWD) in the command will be launched
-				}, &container.HostConfig{
+				}
+				// if len(cmd) > 0 {
+				cfg.Cmd = cmd
+				// }
+				resp, err := cli.ContainerCreate(ctx, cfg, &container.HostConfig{
 					Binds: mounts,
 				}, nil, "")
 				if err != nil {
