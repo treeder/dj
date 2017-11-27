@@ -15,10 +15,6 @@ fi
 git pull
 
 version_file="main.go"
-if [ -z $(grep -m1 -Eo "[0-9]+\.[0-9]+\.[0-9]+" $version_file) ]; then
-  echo "did not find semantic version in $version_file"
-  exit 1
-fi
 # https://github.com/treeder/dockers/tree/master/bump
 docker run --rm -it -v $PWD:/app -w /app treeder/bump --filename $version_file patch
 version=$(grep -m1 -Eo "[0-9]+\.[0-9]+\.[0-9]+" $version_file)
@@ -45,3 +41,9 @@ curl --data-binary "@dj_linux"  -H "Content-Type: application/octet-stream" -u $
 curl --data-binary "@dj_mac"    -H "Content-Type: application/octet-stream" -u $GH_DEPLOY_USER:$GH_DEPLOY_KEY $upload_url\?name\=dj_mac >/dev/null
 curl --data-binary "@dj.exe"    -H "Content-Type: application/octet-stream" -u $GH_DEPLOY_USER:$GH_DEPLOY_KEY $upload_url\?name\=dj.exe >/dev/null
 curl --data-binary "@dj_alpine" -H "Content-Type: application/octet-stream" -u $GH_DEPLOY_USER:$GH_DEPLOY_KEY $upload_url\?name\=dj_alpine >/dev/null
+
+# Docker image
+docker build -t devo/dj:latest .
+docker tag devo/dj:latest devo/dj:$version
+docker push devo/dj:$version
+docker push devo/dj:latest

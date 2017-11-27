@@ -2,7 +2,7 @@ build:
 	go build -o dj
 
 install:
-	go build -o ${GOPATH}/bin/dj
+	go build -o /usr/local/bin/dj
 
 docker: 
 	docker build -t treeder/dj:latest .

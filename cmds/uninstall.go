@@ -22,11 +22,11 @@ func UninstallCmd() cli.Command {
 			if name == "" {
 				return errors.New("Must provide name of program to uninstall")
 			}
-			err := os.Remove(linkFileLocation(name))
+			err := os.Remove(linkFileLocation(c, name))
 			if err != nil {
 				return err
 			}
-			fmt.Printf("%s removed", name)
+			fmt.Printf("%s removed\n", name)
 			return nil
 		},
 	}

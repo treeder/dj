@@ -12,7 +12,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "Docker Jockey"
 	app.Usage = "Spinning sick containers"
-	app.Version = "0.0.3"
+	app.Version = "0.0.4"
 	app.Action = cli.ShowAppHelp
 
 	app.Commands = []cli.Command{
