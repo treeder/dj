@@ -23,7 +23,7 @@ echo "Version: $version"
 GOOS=linux go build -o dj_linux
 GOOS=darwin go build -o dj_mac
 GOOS=windows go build -o dj.exe
-docker run --rm -v ${PWD}:/go/src/github.com/devo/dj -w /go/src/github.com/devo/dj golang:alpine go build -o dj_alpine
+docker run --rm -v ${PWD}:/go/src/github.com/treeder/dj -w /go/src/github.com/treeder/dj golang:alpine go build -o dj_alpine
 
 tag="$version"
 git add -u
@@ -33,7 +33,7 @@ git push
 git push origin $tag
 
 # For GitHub
-url='https://api.github.com/repos/devo/dj/releases'
+url='https://api.github.com/repos/treeder/dj/releases'
 output=$(curl -s -u $GH_DEPLOY_USER:$GH_DEPLOY_KEY -d "{\"tag_name\": \"$version\", \"name\": \"$version\"}" $url)
 upload_url=$(echo "$output" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["upload_url"]' | sed -E "s/\{.*//")
 html_url=$(echo "$output" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["html_url"]')
@@ -43,7 +43,7 @@ curl --data-binary "@dj.exe"    -H "Content-Type: application/octet-stream" -u $
 curl --data-binary "@dj_alpine" -H "Content-Type: application/octet-stream" -u $GH_DEPLOY_USER:$GH_DEPLOY_KEY $upload_url\?name\=dj_alpine >/dev/null
 
 # Docker image
-docker build -t devo/dj:latest .
-docker tag devo/dj:latest devo/dj:$version
-docker push devo/dj:$version
-docker push devo/dj:latest
+docker build -t djdj/dj:latest .
+docker tag djdj/dj:latest djdj/dj:$version
+docker push djdj/dj:$version
+docker push djdj/dj:latest

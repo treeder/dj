@@ -1,7 +1,7 @@
 # build stage
 FROM golang:alpine AS build-env
 RUN apk --no-cache add build-base git bzr mercurial gcc
-ENV D=/go/src/github.com/devo/dj
+ENV D=/go/src/github.com/treeder/dj
 RUN go get -u github.com/golang/dep/cmd/dep
 # ENV PATH="${PATH}:/go/bin"
 RUN env

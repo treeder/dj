@@ -1,4 +1,3 @@
 FROM alpine
 
 ENTRYPOINT ["ls"]
-

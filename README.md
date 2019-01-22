@@ -5,7 +5,7 @@
 Install for Mac:
 
 ```sh
-docker run --rm -v ${HOME}/tmp/dj:/dj/bin devo/dj install --bin --name dj --to /dj/bin https://github.com/devo/dj/releases/download/{LATEST}/dj_mac && mv ${HOME}/tmp/dj/dj /usr/local/bin/dj
+docker run --rm -v ${HOME}/tmp/dj:/dj/bin treeder/dj install --bin --name dj --to /dj/bin https://github.com/devo/dj/releases/download/{LATEST}/dj_mac && mv ${HOME}/tmp/dj/dj /usr/local/bin/dj
 ```
 
 Install for Linux:

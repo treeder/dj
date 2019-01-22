@@ -1,3 +1,3 @@
 set -ex
 
-docker build -t devo/ruby:latest .
+docker build -t djdj/ruby:latest .

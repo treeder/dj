@@ -1,3 +1,3 @@
 set -ex
 
-docker build -t devo/ls:latest .
+docker build -t djdj/ls:latest .

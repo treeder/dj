@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/devo/dj/cmds"
+	"github.com/treeder/dj/cmds"
 	"github.com/urfave/cli"
 )
 
