@@ -43,7 +43,7 @@ curl --data-binary "@dj.exe"    -H "Content-Type: application/octet-stream" -u $
 curl --data-binary "@dj_alpine" -H "Content-Type: application/octet-stream" -u $GH_DEPLOY_USER:$GH_DEPLOY_KEY $upload_url\?name\=dj_alpine >/dev/null
 
 # Docker image
-docker build -t djdj/dj:latest .
-docker tag djdj/dj:latest djdj/dj:$version
-docker push djdj/dj:$version
-docker push djdj/dj:latest
+docker build -t heydj/dj:latest .
+docker tag heydj/dj:latest heydj/dj:$version
+docker push heydj/dj:$version
+docker push heydj/dj:latest

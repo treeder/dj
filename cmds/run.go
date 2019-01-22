@@ -1,8 +1,10 @@
 package cmds
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"strings"
 
@@ -20,18 +22,41 @@ func RunCmd() cli.Command {
 		SkipFlagParsing: true,
 		Action: func(c *cli.Context) error {
 			ctx := contextold.Background()
-			image := c.Args().First()
-			// fmt.Printf("RUNNING! -%v-", image)
+			if len(c.Args()) == 0 {
+				fmt.Println("Invalid args")
+				os.Exit(1)
+			}
+			c1 := c.Args().First()
+			fmt.Printf("RUNNING! -%v-\n", c1)
+
+			foo2 := map[string]*CommandMeta{} // make(Commands)
+			getJson("https://raw.githubusercontent.com/treeder/dj/784bdf804a330f7a98433d4140ab236d7ba0c4a4/commands.json", &foo2)
+			fmt.Printf("COMMANDS: %+v\n", foo2)
+
+			command := foo2[c1]
+			if command == nil {
+				fmt.Println("Unknown command")
+				os.Exit(1)
+			}
+
+			image := command.Image
+			fmt.Println("Image", image)
+			image = "docker.io/" + image
+
 			cli, err := client.NewEnvClient()
 			if err != nil {
 				panic(err)
 			}
 			cmd := c.Args().Tail()
-			// fmt.Println("CMD:", cmd, cmd[0])
-			if len(cmd) > 0 {
-				cmd = strings.Fields(cmd[0])
+			if len(cmd) == 0 {
+
+			} else {
+				fmt.Println("CMD:", cmd, cmd[0])
+				if len(cmd) > 0 {
+					cmd = strings.Fields(cmd[0])
+				}
+				fmt.Println("CMD:", cmd)
 			}
-			// fmt.Println("CMD:", cmd)
 
 			// see if we already have image, if not, pull it
 			_, _, err = cli.ImageInspectWithRaw(ctx, image)
@@ -70,7 +95,7 @@ func RunCmd() cli.Command {
 			go func() {
 				resp2, err := cli.ContainerAttach(ctx, resp.ID, types.ContainerAttachOptions{
 					Stream: true,
-					// Stdin      bool
+					Stdin:  true,
 					Stdout: true,
 					Stderr: true,
 					// DetachKeys string
@@ -99,4 +124,14 @@ func RunCmd() cli.Command {
 			return nil
 		},
 	}
+}
+
+func getJson(url string, target interface{}) error {
+	r, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer r.Body.Close()
+
+	return json.NewDecoder(r.Body).Decode(target)
 }
